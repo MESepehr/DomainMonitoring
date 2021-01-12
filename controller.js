@@ -1,5 +1,56 @@
 var blessed = require('blessed');
 
+//Screen configuration
+    var screen = blessed.screen({
+      smartCSR: true
+    });
+    
+    screen.title = 'Server and domain checker';
+
+    // Quit on Escape, q, or Control-C.
+    screen.key(['escape', 'q', 'C-c'], function(ch, key) {
+      return process.exit(0);
+    });
+
+var myDomains = ['google.com','yahoo.com','192.168.1.1'];
+var diagrams = [{name:'',box:blessed.box()}];
+    diagrams=[];
+
+for(var i = 0 ; i <myDomains.length; i++)
+{
+  diagrams.push({name:myDomains[i],box:blessed.box({
+    top: Math.floor(i/2),
+    left: i%2==0?0:'50%',
+    width: '50%',
+    height: 1,
+    content: myDomains[i],
+    style: {
+      bg: '#22ff22',
+      fg: 'black',
+    }
+  })});
+}
+
+
+//Screen rendering
+  render();
+
+
+  function render()
+  {
+    for(var i=0;i<diagrams.length ; i++)
+    {
+      screen.append(diagrams[i].box);
+    }
+    screen.render();
+  }
+
+
+
+return;
+
+var blessed = require('blessed');
+
 // Create a screen object.
 var screen = blessed.screen({
   smartCSR: true
@@ -35,17 +86,7 @@ screen.key(['escape', 'q', 'C-c'], function(ch, key) {
 
   var precent = 50 ;
 
-  function render()
-  {
-    precent++;
-    if(precent>100)
-    {
-      precent = 10 ;
-    }
-    box.width = precent+'%';
-    screen.append(box);
-    screen.render();
-  }
+  
 
 return;
 
