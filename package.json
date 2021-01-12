@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "a1-beep": "^1.2.1",
+    "beeper": "^2.1.0",
     "blessed": "^0.1.81",
     "ping": "^0.4.0"
   }

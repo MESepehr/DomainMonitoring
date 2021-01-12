@@ -1,5 +1,11 @@
 var blessed = require('blessed');
 var ping = require('ping');
+var config = require('./config.json');
+  //const beeper = require('beeper');
+
+  // beeper();
+  // console.log("hi:2");
+  // return ;
 //Config
 const timeOut = 10*1000 ;
 const bestTime = 500 ;
@@ -19,7 +25,7 @@ var maxWidth = 100/itemPerLine ;
       return process.exit(0);
     });
 
-var myDomains = ['google.com','yahoo.com','192.168.1.1','192.168.7.1'];
+var myDomains = config.hosts ;
 var diagrams = [{name:'',box:blessed.box()}];
     diagrams=[];
 
