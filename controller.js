@@ -8,8 +8,8 @@ var config = require('./config.json');
   // return ;
 //Config
 const timeOut = 10*1000 ;
-const bestTime = 500 ;
-const itemPerLine = 3 ;
+const bestTime = 2000 ;
+const itemPerLine = 4 ;
 
 //Params
 var maxWidth = 100/itemPerLine ;
@@ -38,7 +38,7 @@ for(var i = 0 ; i <myDomains.length; i++)
     height: 1,
     content: myDomains[i],
     style:{
-      bg: '#0f0',
+      bg: '#ffffff',
       fg: 'black'
     }
   })});
@@ -52,9 +52,14 @@ function loopMyPing(data=diagrams[0])
     ping.promise.probe(data.name, {
         timeout: timeOut/1000,
     }).then(function (res) {
-        var respondTime = Math.min(bestTime,new Date().getTime()-requestTime) ;
+        var respondTime = new Date().getTime()-requestTime ;
 
-        data.box.style.bg = !res.alive?'#f00':'#'+Math.floor((res.avg/bestTime)*0xf).toString(16)+Math.floor(((bestTime-res.avg)/bestTime)*0xf).toString(16)+'0';
+        var redString = Math.floor(Math.min((res.avg/bestTime)*0xff,0xff)).toString(16);
+        if(redString.length==1)redString='0'+redString;
+        var greenString = Math.floor((Math.max(0,bestTime-res.avg)/bestTime)*0xff).toString(16);
+        if(greenString.length==1)greenString='0'+greenString
+
+        data.box.style.bg = !res.alive?'#ff0000':'#'+redString+'00ff';
         data.box.content = data.name+((data.name!=res.numeric_host)?('('+res.numeric_host+')>'):'>')+(res.alive?respondTime:' ! ');
 
         screen.append(data.box);
