@@ -9,8 +9,8 @@ var config = require('./config.json');
 //Config
 const timeOut = 15*1000 ;
 const bestTime = 5000 ;
-const itemPerLine = 3 ;
-const lineHeight = 2 ;
+const itemPerLine = 4 ;
+const lineHeight = 3 ;
 const avgSpeed = 10 ;
 
 //Params
@@ -63,7 +63,7 @@ function loopMyPing(data=diagrams[0])
         //if(greenString.length==1)greenString=greenString+'0'
 
         data.box.style.bg = '#'+redString+'0'+greenString+'000';
-        data.box.content = data.box.style.bg;//data.name+((data.name!=res.numeric_host)?('('+res.numeric_host+')>'):'>')+(res.alive?respondTime:' ! '+data.avg);
+        data.box.content = data.name+((data.name!=res.numeric_host)?('('+res.numeric_host+')>'):'>')+(res.alive?respondTime:' ! '+data.avg);
         //data.box.style.bg = '#fff'
 
         screen.append(data.box);
