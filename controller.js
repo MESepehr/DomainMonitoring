@@ -7,9 +7,10 @@ var config = require('./config.json');
   // console.log("hi:2");
   // return ;
 //Config
-const timeOut = 10*1000 ;
+const timeOut = 15*1000 ;
 const bestTime = 2000 ;
-const itemPerLine = 4 ;
+const itemPerLine = 3 ;
+const lineHeight = 2 ;
 
 //Params
 var maxWidth = 100/itemPerLine ;
@@ -32,10 +33,10 @@ var diagrams = [{name:'',box:blessed.box()}];
 for(var i = 0 ; i <myDomains.length; i++)
 {
   diagrams.push({name:myDomains[i],box:blessed.box({
-    top: Math.floor(i/itemPerLine),
+    top: Math.floor(i/itemPerLine)*lineHeight,
     left: ((i%itemPerLine)*maxWidth)+'%',
     width: maxWidth+'%',
-    height: 1,
+    height: lineHeight,
     content: myDomains[i],
     style:{
       bg: '#ffffff',
@@ -59,14 +60,14 @@ function loopMyPing(data=diagrams[0])
         var greenString = Math.floor((Math.max(0,bestTime-res.avg)/bestTime)*0xff).toString(16);
         if(greenString.length==1)greenString='0'+greenString
 
-        data.box.style.bg = !res.alive?'#ff0000':'#'+redString+'00ff';
+        data.box.style.bg = !res.alive?'#ff0000':'#'+redString+'ff00';
         data.box.content = data.name+((data.name!=res.numeric_host)?('('+res.numeric_host+')>'):'>')+(res.alive?respondTime:' ! ');
 
         screen.append(data.box);
         screen.render();
 
 
-        setTimeout(loopMyPing,1000,data);
+        setTimeout(loopMyPing,2000,data);
     });
 }
 
