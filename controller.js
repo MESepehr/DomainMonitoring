@@ -8,9 +8,10 @@ var config = require('./config.json');
   // return ;
 //Config
 const timeOut = 15*1000 ;
-const bestTime = 2000 ;
+const bestTime = 5000 ;
 const itemPerLine = 3 ;
 const lineHeight = 2 ;
+const avgSpeed = 10 ;
 
 //Params
 var maxWidth = 100/itemPerLine ;
@@ -27,12 +28,12 @@ var maxWidth = 100/itemPerLine ;
     });
 
 var myDomains = config.hosts ;
-var diagrams = [{name:'',box:blessed.box()}];
+var diagrams = [{name:'',box:blessed.box(),avg:0}];
     diagrams=[];
 
 for(var i = 0 ; i <myDomains.length; i++)
 {
-  diagrams.push({name:myDomains[i],box:blessed.box({
+  diagrams.push({avg:0,name:myDomains[i],box:blessed.box({
     top: Math.floor(i/itemPerLine)*lineHeight,
     left: ((i%itemPerLine)*maxWidth)+'%',
     width: maxWidth+'%',
@@ -54,14 +55,15 @@ function loopMyPing(data=diagrams[0])
         timeout: timeOut/1000,
     }).then(function (res) {
         var respondTime = new Date().getTime()-requestTime ;
+        data.avg += (respondTime-data.avg)/avgSpeed;
 
-        var redString = Math.floor(Math.min((res.avg/bestTime)*0xff,0xff)).toString(16);
+        var redString = Math.floor(Math.min((data.avg/bestTime)*0xff,0xff)).toString(16);
         if(redString.length==1)redString='0'+redString;
-        var greenString = Math.floor((Math.max(0,bestTime-res.avg)/bestTime)*0xff).toString(16);
+        var greenString = Math.floor((Math.max(0,bestTime-data.avg)/bestTime)*0xff).toString(16);
         if(greenString.length==1)greenString='0'+greenString
 
-        data.box.style.bg = !res.alive?'#ff0000':'#'+redString+'ff00';
-        data.box.content = data.name+((data.name!=res.numeric_host)?('('+res.numeric_host+')>'):'>')+(res.alive?respondTime:' ! ');
+        data.box.style.bg = '#'+redString+greenString+'00';
+        data.box.content = data.name+((data.name!=res.numeric_host)?('('+res.numeric_host+')>'):'>')+(res.alive?respondTime:' ! '+data.avg);
 
         screen.append(data.box);
         screen.render();
