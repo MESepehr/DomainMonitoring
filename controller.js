@@ -54,7 +54,7 @@ function loopMyPing(data=diagrams[0])
     ping.promise.probe(data.name, {
         timeout: timeOut/1000,
     }).then(function (res) {
-        var respondTime = new Date().getTime()-requestTime ;
+        var respondTime = res.alive?new Date().getTime()-requestTime:timeOut ;
         data.avg += (respondTime-data.avg)/avgSpeed;
 
         var redString = Math.floor(Math.min((data.avg/bestTime)*0xe,0xe)).toString(16);
@@ -63,7 +63,7 @@ function loopMyPing(data=diagrams[0])
         //if(greenString.length==1)greenString=greenString+'0'
 
         data.box.style.bg = '#'+redString+'0'+greenString+'000';
-        data.box.content = data.name+((data.name!=res.numeric_host)?('('+res.numeric_host+')>'):'>')+(res.alive?respondTime:' ! '+data.avg);
+        data.box.content = data.name+((data.name!=res.numeric_host)?('('+res.numeric_host+')>'):'>')+(res.alive?respondTime:' ! ')+'avg:'+Math.round(data.avg);
         //data.box.style.bg = '#fff'
 
         screen.append(data.box);
