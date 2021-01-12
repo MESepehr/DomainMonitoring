@@ -40,7 +40,7 @@ for(var i = 0 ; i <myDomains.length; i++)
     height: lineHeight,
     content: myDomains[i],
     style:{
-      bg: '#ffffff',
+      bg: '#e0e0e0',
       fg: 'black'
     }
   })});
@@ -57,13 +57,14 @@ function loopMyPing(data=diagrams[0])
         var respondTime = new Date().getTime()-requestTime ;
         data.avg += (respondTime-data.avg)/avgSpeed;
 
-        var redString = Math.floor(Math.min((data.avg/bestTime)*0xff,0xff)).toString(16);
-        if(redString.length==1)redString='0'+redString;
-        var greenString = Math.floor((Math.max(0,bestTime-data.avg)/bestTime)*0xff).toString(16);
-        if(greenString.length==1)greenString='0'+greenString
+        var redString = Math.floor(Math.min((data.avg/bestTime)*0xe,0xe)).toString(16);
+        //if(redString.length==1)redString=redString+'0';
+        var greenString = Math.floor((Math.max(0,bestTime-data.avg)/bestTime)*0xe).toString(16);
+        //if(greenString.length==1)greenString=greenString+'0'
 
-        data.box.style.bg = '#'+redString+greenString+'00';
-        data.box.content = data.name+((data.name!=res.numeric_host)?('('+res.numeric_host+')>'):'>')+(res.alive?respondTime:' ! '+data.avg);
+        data.box.style.bg = '#'+redString+'0'+greenString+'000';
+        data.box.content = data.box.style.bg;//data.name+((data.name!=res.numeric_host)?('('+res.numeric_host+')>'):'>')+(res.alive?respondTime:' ! '+data.avg);
+        //data.box.style.bg = '#fff'
 
         screen.append(data.box);
         screen.render();
